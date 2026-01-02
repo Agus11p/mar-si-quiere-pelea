@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Arena - Mar Si Quiere Pelea</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Scripts & Estilos Nuevos -->
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/game.css">
+    <script src="main.js" defer></script>
+</head>
+
+<body data-page="matching" class="dashboard-body">
+
+    <!-- HEADER IGUAL AL HOME -->
+    <header>
+        <div class="brand">
+            <i class="fa-solid fa-gamepad" style="color:var(--accent-pink);"></i>
+            Mar Si Quiere Pelea
+        </div>
+        <div class="live-status">
+            <span class="live-badge">● BATTLE MODE</span>
+        </div>
+        <div class="header-controls">
+            <button onclick="window.location.href='index.html'" class="control-btn" title="Salir al Lobby">
+                <i class="fa-solid fa-door-open"></i> SALIR
+            </button>
+        </div>
+    </header>
+
+    <!-- GRID PRINCIPAL (Solo Centro para Focus, o con Ranking lateral) -->
+    <!-- Usaremos el mismo grid pero ocultaremos lateral izq en móvil para focus -->
+    <div class="dashboard-grid">
+
+        <!-- COLUMNA IZQUIERDA (Minimizada o Chat futuro) -->
+        <aside class="left-col" style="opacity:0.5; pointer-events:none;">
+            <div class="panel">
+                <div class="panel-title"><i class="fa-solid fa-signal"></i> ESTADO P2P</div>
+                <div style="font-size:0.8rem; color:#888;">
+                    Conexión Directa<br>
+                    Encriptada<br>
+                    Low Latency
+                </div>
+            </div>
+        </aside>
+
+        <!-- COLUMNA CENTRAL: AQUÍ SE INYECTA EL RADAR Y EL JUEGO -->
+        <main class="center-col">
+            <!-- El contenido se genera dinámicamente en main.js (initMatching) -->
+            <div style="margin-top:2rem;">
+                <i class="fa-solid fa-circle-notch fa-spin" style="font-size:3rem; color:var(--accent-pink);"></i>
+                <p style="margin-top:1rem; color:#666;">Iniciando sistemas de combate...</p>
+            </div>
+        </main>
+
+        <!-- COLUMNA DERECHA: RANKING (Visible para ver si subís puntos) -->
+        <aside class="right-col panel">
+            <div class="panel-title">
+                <span><i class="fa-solid fa-trophy"></i> Ranking</span>
+            </div>
+            <!-- Reutilizamos el id del home para que main.js lo llene si quiere -->
+            <ul id="home-top-list" class="ranking-list"></ul>
+        </aside>
+
+    </div>
+</body>
+
+</html>

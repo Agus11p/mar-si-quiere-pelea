@@ -1,0 +1,52 @@
+/* --- GLOBAL: VARIABLES & RESET --- */
+:root {
+    --bg-dark: #130b1b;
+    --bg-panel: #1e1226;
+    --accent-pink: #ff2f92;
+    --accent-cyan: #00e5ff;
+    --accent-purple: #9d4edd;
+    --accent-gold: #ffc800;
+    --text-white: #ffffff;
+    --text-dim: #a69bb3;
+    --grid-line: rgba(255, 47, 146, 0.1);
+    --font-primary: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Animaciones Globales */
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

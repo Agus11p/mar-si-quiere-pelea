@@ -1,0 +1,12 @@
+{
+    "name": "mar-si-quiere-pelea",
+    "version": "1.0.0",
+    "description": "Aplicación web para streams donde los espectadores se enfrentan en Tic‑Tac‑Toe.",
+    "main": "main.js",
+    "scripts": {
+        "dev": "npx -y http-server ./ -p 8080"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {}
+}
