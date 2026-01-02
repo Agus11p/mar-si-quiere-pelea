@@ -34,113 +34,75 @@
     <!-- GRID PRINCIPAL DE 3 COLUMNAS -->
     <div class="dashboard-grid">
 
-        <!-- COLUMNA IZQUIERDA: LIVE FIGHTS & SOCIAL -->
+        <!-- COLUMNA IZQUIERDA: LIVE & SOCIAL -->
         <aside class="left-col">
             <div class="panel">
                 <div class="panel-title">
-                    <span><i class="fa-solid fa-swords"></i> Live Fights</span>
-                    <span
-                        style="font-size:0.7rem; background:rgba(255,47,146,0.2); padding:2px 6px; border-radius:4px; color:#ff2f92;">2
-                        ACTIVE</span>
+                    <span><i class="fa-solid fa-satellite-dish"></i> LIVE FIGHTS</span>
+                    <span class="live-badge">REAL-TIME</span>
                 </div>
-
-                <!-- Mockup Fight Card 1 -->
-                <div class="fight-card">
-                    <div class="fight-card-header">ROUND 2</div>
-                    <div class="fight-card-vs">
-                        <span>NightSlayer</span>
-                        <span class="vs-badge">VS</span>
-                        <span>PixelPunch</span>
-                    </div>
-                </div>
-
-                <!-- Mockup Fight Card 2 -->
-                <div class="fight-card" style="border-color: var(--accent-gold);">
-                    <div class="fight-card-header" style="color:var(--accent-gold);">FINISHER</div>
-                    <div class="fight-card-vs">
-                        <span>RetroKing</span>
-                        <span class="vs-badge">VS</span>
-                        <span>QueenStr</span>
-                    </div>
-                </div>
-
-                <div
-                    style="margin-top:auto; text-align:center; padding:1rem; border:1px dashed #333; border-radius:8px; color:#666; font-size:0.8rem;">
-                    <i class="fa-solid fa-user-clock"></i> Waiting for players...
+                <div id="live-fights-container" style="color:#666; font-size:0.8rem; text-align:center; padding:1rem;">
+                    Sin batallas en curso
                 </div>
             </div>
 
-            <div class="panel" style="margin-top: auto;">
-                <div class="panel-title">Follow & Join</div>
+            <div class="panel">
+                <div class="panel-title"><i class="fa-solid fa-users"></i> SOCIAL</div>
                 <div class="social-grid">
-                    <button class="social-btn" style="grid-column: span 2;"><i class="fa-brands fa-twitch"></i>
-                        Twitch</button>
+                    <button class="social-btn"><i class="fa-brands fa-twitch"></i> Twitch</button>
                     <button class="social-btn"><i class="fa-brands fa-discord"></i> Discord</button>
-                    <button class="social-btn"><i class="fa-brands fa-youtube"></i> YouTube</button>
-                    <button class="social-btn"><i class="fa-brands fa-instagram"></i> Insta</button>
-                    <button class="social-btn"><i class="fa-brands fa-tiktok"></i> TikTok</button>
+                    <button class="social-btn"><i class="fa-brands fa-instagram"></i> Instagram</button>
+                    <button class="social-btn"><i class="fa-brands fa-twitter"></i> Twitter</button>
                 </div>
             </div>
         </aside>
 
         <!-- COLUMNA CENTRAL: HERO ACTION -->
         <main class="center-col">
-
             <div class="hero-box">
-                <span class="live-arena-tag">● Live Arena</span>
-                <h1 class="main-title">
-                    Mar Si<br>
-                    Quiere<br>
-                    <span class="highlight">Pelea</span>
-                </h1>
-                <p class="subtitle">Batalla de Chat en Vivo</p>
+                <div class="live-arena-tag"><i class="fa-solid fa-circle-dot"></i> ARENA ABIERTA</div>
+                <h1 class="main-title">MAR vs <span class="highlight">RIVAL</span></h1>
+                <p class="subtitle">Desafía a tus amigos a un PvP rápido.<br>Sin registro. Link directo. Puro caos.</p>
 
                 <button id="join-btn">
-                    <i class="fa-solid fa-gavel"></i> PELEAR
+                    <i class="fa-solid fa-gamepad"></i> PELEAR
                 </button>
             </div>
 
+            <!-- ESTADÍSTICAS REALES (Se llenan con JS) -->
             <div class="stats-row">
                 <div class="stat-box">
-                    <span class="stat-label">Total Fights</span>
-                    <span class="stat-val"><i class="fa-solid fa-gamepad" style="font-size:1rem; margin-right:5px;"></i>
-                        1,240</span>
+                    <span class="stat-val" id="stat-total-fights">0</span>
+                    <span class="stat-label">Peleas Totales</span>
                 </div>
                 <div class="stat-box">
-                    <span class="stat-label">Active Users</span>
-                    <span class="stat-val"><i class="fa-solid fa-users" style="font-size:1rem; margin-right:5px;"></i>
-                        432</span>
+                    <span class="stat-val" id="stat-active-users">1</span>
+                    <span class="stat-label">Usuarios Hoy</span>
                 </div>
                 <div class="stat-box">
-                    <span class="stat-label">Global WR</span>
-                    <span class="stat-val"><i class="fa-solid fa-chart-line"
-                            style="font-size:1rem; margin-right:5px;"></i> 48%</span>
+                    <span class="stat-val" id="stat-knockouts">-</span>
+                    <span class="stat-label">Mejor Racha</span>
                 </div>
             </div>
-
         </main>
 
         <!-- COLUMNA DERECHA: RANKING -->
-        <aside class="right-col panel" style="height: 100%;">
+        <aside class="right-col panel">
             <div class="panel-title">
-                <span><i class="fa-solid fa-trophy"></i> Ranking</span>
-                <button
-                    style="background:none; border:1px solid #444; color:#888; border-radius:4px; padding:2px 8px; cursor:pointer;">OCT
-                    2026 <i class="fa-solid fa-caret-down"></i></button>
-            </div>
 
-            <div class="ranking-header">
-                <span>Fighter</span>
-                <span>Win Rate</span>
-            </div>
+                <div class="ranking-header">
+                    <span>Fighter</span>
+                    <span>Win Rate</span>
+                </div>
 
-            <ul id="home-top-list" class="ranking-list">
-                <!-- Se llena dinámicamente con JS, pero dejo ejemplos visuales por si acaso JS falla al cargar -->
-            </ul>
+                <ul id="home-top-list" class="ranking-list">
+                    <!-- Se llena dinámicamente con JS, pero dejo ejemplos visuales por si acaso JS falla al cargar -->
+                </ul>
 
-            <div style="margin-top:auto; font-size:0.7rem; color:#555; padding-top:1rem; border-top:1px solid #333;">
-                <i class="fa-solid fa-circle-info"></i> Ganar otorga +10 Puntos. Empate 0.
-            </div>
+                <div
+                    style="margin-top:auto; font-size:0.7rem; color:#555; padding-top:1rem; border-top:1px solid #333;">
+                    <i class="fa-solid fa-circle-info"></i> Ganar otorga +10 Puntos. Empate 0.
+                </div>
         </aside>
 
     </div>

@@ -34,9 +34,9 @@ function goto(page) { window.location.href = page; }
 
 /* ---------- INICIO ---------- */
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("Mar app iniciada.");
 
     // 1. SEGURIDAD: Verificar Sesión
-    // Excluir login.html de la verificación (aunque login.html no carga main.js, por seguridad en el resto)
     const currentPage = window.location.pathname.split('/').pop();
     if (currentPage !== 'login.html' && !getStorage(STORAGE_KEYS.USER)) {
         window.location.href = 'login.html';
@@ -48,56 +48,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (pageId === 'home') initHome();
     else if (pageId === 'matching') initMatching();
-    else if (pageId === 'game') initGame();
-    else if (pageId === 'result') initResult();
+    else if (pageId === 'error') { /* Nada especial en error */ }
+    // No hay 'game' ni 'result' separados, todo es SPA en matching ahora.
 
-    // Renderizar ranking visual siempre si existe el sidebar
+    // Siempre renderizamos ranking si existe
     renderRankingSidebar();
 });
 
 
 /* --- PÁGINA: HOME --- */
 function initHome() {
-    // Configurar bienvenida personalizada
-    const currentUser = getStorage(STORAGE_KEYS.USER, 'Gamer');
-    // Podríamos poner el nombre en algún lado si el diseño lo permite
+    console.log("Iniciando Home...");
 
-    // Verificar si venimos con un ID de invitación
+    const currentUser = getStorage(STORAGE_KEYS.USER, 'Gamer');
     const params = new URLSearchParams(window.location.search);
     const inviteId = params.get('join');
 
-    // Renderizar ranking REAL (Sin datos falsos)
-    const topList = $('#home-top-list');
-    if (topList) {
-        const ranking = getStorage(STORAGE_KEYS.RANKING, []);
-        topList.innerHTML = ''; // Limpiar
-
-        if (ranking.length === 0) {
-            topList.innerHTML = `
-                <div style="padding:2rem; text-align:center; color:#666; font-style:italic;">
-                    <i class="fa-solid fa-ghost" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i><br>
-                    Sin datos aún.<br>Sé el primero en ganar.
-                </div>
-            `;
-        } else {
-            ranking.slice(0, 10).forEach((p, i) => renderRankItem(topList, p, i));
-        }
-    }
-
+    // 1. Botón de Acción (Pelear / Unirse)
     const btn = $('#join-btn');
-    if (inviteId) {
-        btn.innerHTML = '<i class="fa-solid fa-bolt"></i> ACEPTAR RETO';
-        btn.classList.add('pulse-btn');
+    if (btn) {
+        if (inviteId) {
+            btn.innerHTML = '<i class="fa-solid fa-bolt"></i> ACEPTAR RETO';
+            btn.classList.add('pulse-btn');
+        }
+
+        btn.addEventListener('click', () => {
+            console.log("Click en Pelear/Unirse");
+            if (inviteId) {
+                window.location.href = `matching.html?join=${inviteId}`;
+            } else {
+                window.location.href = `matching.html?create=true`;
+            }
+        });
+    } else {
+        console.error("Botón #join-btn no encontrado!");
     }
 
-    btn.addEventListener('click', () => {
-        // Ya tenemos usuario validado por el login
-        if (inviteId) {
-            window.location.href = `matching.html?join=${inviteId}`;
-        } else {
-            window.location.href = `matching.html?create=true`;
-        }
-    });
+    // 2. Estadísticas Reales
+    updateRealStats();
 
     // Logout opcional
     const logoutBtn = $('.control-btn i.fa-gear')?.parentNode; // Usamos el botón de settings como logout temporal
@@ -108,6 +96,46 @@ function initHome() {
                 window.location.href = 'login.html';
             }
         };
+    }
+}
+
+function updateRealStats() {
+    // Total peleas (guardado en localStorage, simulando persistencia global localmente)
+    let totalFights = parseInt(localStorage.getItem('msgp_total_fights') || '0');
+    // Usuarios activos (simulamos 1 + random bajo para dar vida sin mentir demasiado)
+    // En una app real esto vendría del servidor.
+    let activeUsers = 1;
+
+    const elTotal = $('#stat-total-fights');
+    const elActive = $('#stat-active-users');
+
+    if (elTotal) elTotal.textContent = totalFights;
+    if (elActive) elActive.textContent = activeUsers;
+}
+
+function incrementTotalFights() {
+    let total = parseInt(localStorage.getItem('msgp_total_fights') || '0');
+    localStorage.setItem('msgp_total_fights', total + 1);
+}
+
+function renderRankingSidebar() {
+    const topList = $('#home-top-list');
+    if (!topList) return;
+
+    const ranking = getStorage(STORAGE_KEYS.RANKING, []);
+    topList.innerHTML = ''; // Limpiar
+
+    if (ranking.length === 0) {
+        topList.innerHTML = `
+            <div style="padding:2rem; text-align:center; color:#666; font-style:italic;">
+                <i class="fa-solid fa-ghost" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i><br>
+                Sin ranking aún.<br>Gana para aparecer.
+            </div>
+        `;
+    } else {
+        // Ordenar por puntos desc
+        ranking.sort((a, b) => b.puntos - a.puntos);
+        ranking.slice(0, 10).forEach((p, i) => renderRankItem(topList, p, i));
     }
 }
 
@@ -401,10 +429,16 @@ function updateRankingLocal(winnerName) {
     setStorage(STORAGE_KEYS.RANKING, ranking);
 }
 
-function renderRankingSidebar() {
-    // Si la barra existe en el HTML actual, renderizar
-    // (Ya cubierto en initHome, pero útil si se llama desde otros lados)
-    // Dejo vacío porque initHome ya lo hace.
+/* Helpers UI */
+function renderRankItem(container, player, index) {
+    const isTop1 = index === 0;
+    const li = document.createElement('li');
+    li.className = `ranking-item ${isTop1 ? 'top-1' : ''}`;
+    li.innerHTML = `
+        <div class="rank-pos">${index + 1}</div>
+        <div class="rank-info"><span class="rank-name">${player.nombre}</span><span class="rank-pts">${player.puntos} pts</span></div>
+    `;
+    container.appendChild(li);
 }
 
 /* Helpers */
